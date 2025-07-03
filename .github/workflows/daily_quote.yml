@@ -12,9 +12,11 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Install jq
+        run: sudo apt-get install jq
+
       - name: Fetch a random quote
         run: |
-          sudo apt-get install jq
           curl -s https://api.quotable.io/random | jq -r '"💬 \(.content) — \(.author)"' > quote_of_the_day.txt
 
       - name: Commit new quote
@@ -23,4 +25,8 @@ jobs:
           git config --local user.name "GitHub Action"
           git add quote_of_the_day.txt
           git commit -m "📜 Updated quote of the day: $(date +'%Y-%m-%d')" || echo "No changes to commit"
-          git push
+
+      - name: Push changes using token
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}
+          git push origin main
