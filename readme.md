@@ -138,5 +138,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you found this helpful, don't forget to **follow** me on GitHub and **give this repo a ⭐ star** to show your support!
 
-Let’s keep learning and building — one query at a time. 🚀
+Let’s keep learning and building — one query at a time. 🚀 
 
