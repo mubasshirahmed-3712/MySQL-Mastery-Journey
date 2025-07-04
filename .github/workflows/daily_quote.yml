@@ -2,31 +2,34 @@ name: Daily Quote Commit
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Runs every day at midnight UTC
-  workflow_dispatch:     # Allow manual trigger
+    - cron: '0 0 * * *'  # 🔁 Runs every day at midnight UTC
+  workflow_dispatch:     # ▶️ Allows manual run
 
 jobs:
   update-quote:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
+      - name: 🔄 Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install jq
-        run: sudo apt-get install jq
+      - name: 🧰 Install jq
+        run: sudo apt-get install jq -y
 
-      - name: Fetch a random quote
+      - name: 💬 Fetch a random quote
         run: |
           curl -s https://api.quotable.io/random | jq -r '"💬 \(.content) — \(.author)"' > quote_of_the_day.txt
 
-      - name: Commit new quote
+      - name: 📝 Commit the new quote
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add quote_of_the_day.txt
           git commit -m "📜 Updated quote of the day: $(date +'%Y-%m-%d')" || echo "No changes to commit"
 
-      - name: Push changes using token
+      - name: 🚀 Push changes using token
+        env:
+          TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}
+          git remote set-url origin https://x-access-token:${TOKEN}@github.com/${{ github.repository }}
           git push origin main
